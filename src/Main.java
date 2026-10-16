@@ -31,18 +31,17 @@ class Calculate {
 
     }
 
-    public void bruh(){
+    public void bruh() {
         int outDegree;
-        int nodeMax = graph.alist.toArray().length -1;
-
+        int nodeMax = graph.alist.toArray().length - 1;
 
 
         //initalScore
-        for(int i = 0; i<rank.length;i++){
-            rank[i] = 1.0/numVerters;
+        for (int i = 0; i < rank.length; i++) {
+            rank[i] = 1.0 / numVerters;
         }
         //
-        double baseAmount = (1-0.85)/numVerters;
+        double baseAmount = (1 - 0.85) / numVerters;
         //checking for number of outdegree edges
 
         /*
@@ -62,35 +61,46 @@ class Calculate {
          */
 //testing this should only appear on test branch
         //step1.
+        int iteration = 1;
         int currentID = 0;
-        double prS;
-        int numberOfOutGoingLinks;
-        ArrayList<Double> related = new ArrayList<>();
-        for(int i = 0; i < graph.alist.toArray().length;i++){
-           if(i!=currentID){
-               Node sourceNode = graph.alist.get(currentID).get(0);
-               LinkedList<Node> currentList = graph.alist.get(i);
-               for(Node node : currentList){
-                   if(node == sourceNode){
-                       prS= rank[currentID];
-                       numberOfOutGoingLinks = currentList.size()-1;
-                       related.add(prS/numberOfOutGoingLinks);
-                   }
-               }
-           }
-        }
+        Node sourceNode = null;
+        for (int j = 0; j <= 20; j++) {
+            while (currentID < graph.alist.toArray().length) {
+                ArrayList<Double> related = new ArrayList<>();
+                for (int i = 0; i < graph.alist.toArray().length; i++) {
+                    double prS;
+                    int numberOfOutGoingLinks;
+                    if (i != currentID) {
+                        sourceNode = graph.alist.get(currentID).get(0);
+                        LinkedList<Node> currentList = graph.alist.get(i);
+                        for (Node node : currentList) {
+                            if (node == sourceNode) {
+                                prS = rank[currentID];
+                                numberOfOutGoingLinks = currentList.size() - 1;
+                                related.add(prS / numberOfOutGoingLinks);
+                            }
+                        }
+                    }
+                }
 //step 5
-        double totalRightSide = 0;
-        for(double num : related){
-            totalRightSide += num;
-        }
+                double totalRightSide = 0;
+                for (double num : related) {
+                    totalRightSide += num;
+                }
 //step 6
-        totalRightSide = totalRightSide * dampingFactor;
+                totalRightSide = totalRightSide * dampingFactor;
 //step 7
-    double prD = baseAmount + totalRightSide;
-        System.out.println();
-        System.out.printf("PR of page %d (a) = %f",currentID,prD);
-
+                double prD = baseAmount + totalRightSide;
+                rank[currentID] = prD;
+                currentID++;
+                System.out.println();
+                System.out.printf("PR of page %d  = %f  Node %c", currentID, prD, sourceNode.data);
+            }
+            System.out.println();
+            System.out.println("Iteration "+iteration);
+            ++iteration;
+            currentID = 0;
+        }
     }
 
 
