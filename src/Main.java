@@ -60,7 +60,7 @@ class Calculate {
         8.
 
          */
-
+//testing this should only appear on test branch
         //step1.
         int currentID = 0;
         double prS;
@@ -79,7 +79,17 @@ class Calculate {
                }
            }
         }
-
+//step 5
+        double totalRightSide = 0;
+        for(double num : related){
+            totalRightSide += num;
+        }
+//step 6
+        totalRightSide = totalRightSide * dampingFactor;
+//step 7
+    double prD = baseAmount + totalRightSide;
+        System.out.println();
+        System.out.printf("PR of page %d (a) = %f",currentID,prD);
 
     }
 
